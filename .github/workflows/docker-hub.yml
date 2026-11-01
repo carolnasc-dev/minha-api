@@ -40,8 +40,8 @@ jobs:
       - name: Login no Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build e Push Docker
         uses: docker/build-push-action@v6
@@ -49,8 +49,8 @@ jobs:
           context: .
           push: true
           tags: |
-               carolinenascimento/senai_fastapi:latest
-               carolinenascimento/senai_fastapi:${{ github.sha }}
+            carolinenascimento/senai_fastapi:latest
+            carolinenascimento/senai_fastapi:${{ github.sha }}
 
   Deploy:
     name: Implantacao AWS
@@ -72,7 +72,7 @@ jobs:
               --name senai_fastapi \
               --restart unless-stopped \
               -p 8080:8080 \
-             carolinenascimento/senai_fastapi:latest
+              carolinenascimento/senai_fastapi:latest
             sleep 5
             curl -f http://localhost:8080/health || exit 1
             echo "Deploy concluido com sucesso!"
